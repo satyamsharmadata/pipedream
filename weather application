@@ -1,0 +1,50 @@
+from tkinter import *
+import requests
+import json
+
+window=Tk()
+
+welcome=Label(text="Welcome to the Weather App!", font=("Arial",20))
+welcome.grid(column=0,row=1)
+
+
+place_lbl=Label(text="Please enter the name of the place", font=("Arial",15))
+place_lbl.grid(column=0,row=2)
+
+
+
+place=Entry(width="30",font=("Arial",20))
+place.grid(column=0,row=3)
+
+
+def weather():
+  location=place.get()
+  api="http://api.openweathermap.org/data/2.5/weather?q="+location+"&appid=cf68af6b1720ee2d0fb9db397e7632d2"
+  response=requests.get(api)
+  x = response.json() 
+  y=x["main"]
+  current_temperature = round(y["temp"]-273.15)
+  
+  if(current_temperature>25):
+   temperature.configure(text=current_temperature, bg="yellow")
+   description.configure(text="It appears to be hot")
+  else:
+    temperature.configure(text=current_temperature, bg="light blue")
+    description.configure(text="It appears to be cold")
+
+
+
+
+find=Button(text="Find it!", command=weather)
+find.grid(column=0,row=4)
+
+
+temperature=Label(text=" ",font=("Arial",20))
+temperature.grid(column=0, row=5)
+
+description=Label(text="Something about the place!",font=("Arial",20), bg="black", fg="white")
+description.grid(column=0, row=6)
+
+
+window.geometry('600x400')
+window.mainloop()
